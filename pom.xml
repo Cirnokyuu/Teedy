@@ -89,8 +89,96 @@
       </site>
   </distributionManagement>
 
+  <reporting>
+    <plugins>
+        <plugin> 
+          <groupId>org.apache.maven.plugins</groupId> 
+          <artifactId>maven-surefire-report-plugin</artifactId> 
+          <version>3.0.0</version> 
+          <reportSets> 
+            <reportSet> 
+              <id>aggregate</id> 
+              <inherited>false</inherited> 
+              <reports> 
+                <report>report</report> 
+              </reports> 
+              <configuration> 
+                <aggregate>true</aggregate> 
+              </configuration> 
+            </reportSet> 
+          </reportSets> 
+        </plugin> 
+        <plugin> 
+          <groupId>org.jacoco</groupId> 
+          <artifactId>jacoco-maven-plugin</artifactId> 
+          <version>0.8.9</version> 
+            <reportSets> 
+            <reportSet> 
+            <id>aggregate</id> 
+            <inherited>false</inherited> 
+            <reports> 
+            <report>report-aggregate</report> 
+            </reports> 
+            </reportSet> 
+            </reportSets> 
+        </plugin> 
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <version>3.21.2</version>
+            <configuration>
+                <rulesets>
+                    <ruleset>${project.basedir}/src/main/resources/pmd-ruleset.xml</ruleset>
+                </rulesets>
+                <linkXref>true</linkXref>
+            </configuration>
+        </plugin>
+    </plugins>
+  </reporting>
+
+
   <build>
     <plugins>
+      <plugin> 
+        <groupId>org.jacoco</groupId> 
+        <artifactId>jacoco-maven-plugin</artifactId> 
+        <version>0.8.9</version> 
+        <executions> 
+          <execution> 
+            <goals> 
+              <goal>prepare-agent</goal> 
+                </goals> 
+                  </execution> 
+                  <!-- attached to Maven test phase --> 
+                  <execution> 
+                <id>report</id> 
+                <phase>test</phase> 
+                <goals> 
+              <goal>report</goal> 
+            </goals> 
+          </execution> 
+        </executions> 
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.21.2</version>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>check</goal>
+                </goals>
+            </execution>
+        </executions>
+        <configuration>
+            <rulesets>
+                <ruleset>${project.basedir}/src/main/resources/pmd-ruleset.xml</ruleset>
+            </rulesets>
+            <!-- 当有违规时，不使构建失败 -->
+            <failOnViolation>false</failOnViolation>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
@@ -141,6 +229,13 @@
 
   <dependencyManagement>
     <dependencies>
+
+      <dependency>
+        <groupId>net.sourceforge.pmd</groupId>
+        <artifactId>pmd-java</artifactId>
+        <version>6.55.0</version> <!-- fixed here -->
+      </dependency>
+
       <dependency>
         <groupId>com.sismics.docs</groupId>
         <artifactId>docs-core</artifactId>
