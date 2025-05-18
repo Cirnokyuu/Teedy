@@ -13,11 +13,18 @@ ENV JETTY_VERSION 11.0.20
 ENV JETTY_HOME /opt/jetty
 
 # Install packages
-RUN apt-get update && \
-    apt-get -y -q --no-install-recommends install \
-    vim less procps unzip wget tzdata openjdk-11-jdk \
-    ffmpeg \
-    mediainfo \
+RUN apt-get update
+RUN apt-get upgrade
+RUN apt-get -y -q --no-install-recommends install vim
+RUN apt-get -y -q --no-install-recommends install less
+RUN apt-get -y -q --no-install-recommends install procps
+RUN apt-get -y -q --no-install-recommends install unzip
+RUN apt-get -y -q --no-install-recommends install wget
+RUN apt-get -y -q --no-install-recommends install tzdata
+RUN apt-get -y -q --no-install-recommends install openjdk-11-jdk
+RUN apt-get -y -q --no-install-recommends install ffmpeg
+RUN apt-get -y -q --no-install-recommends install mediainfo
+RUN apt-get -y -q --no-install-recommends install tesseract-ocr \
     tesseract-ocr \
     tesseract-ocr-ara \
     tesseract-ocr-ces \
