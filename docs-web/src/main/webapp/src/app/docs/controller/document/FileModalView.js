@@ -87,6 +87,21 @@ angular.module('docs').controller('FileModalView', function ($uibModalInstance, 
     window.open('../api/file/' + $stateParams.fileId + '/data?size=content');
   };
 
+  $scope.clearTranslatedText = function () {
+    $scope.translatedText = null;
+  };
+
+  $scope.translatedText = null;
+
+  $scope.showTranslatedText = function () {
+    $scope.translatedText = "Translating...";
+    Restangular.one('file', $stateParams.fileId).one('data').get({ size: 'translated' }).then(function (resp) {
+      $scope.translatedText = resp;
+    }, function () {
+      $scope.translatedText = "Translation failed";
+    });
+  };
+
   /**
    * Print the file.
    */
@@ -106,7 +121,7 @@ angular.module('docs').controller('FileModalView', function ($uibModalInstance, 
   };
 
   // Close the modal when the user exits this state
-  var off = $transitions.onStart({}, function(transition) {
+  var off = $transitions.onStart({}, function (transition) {
     if (!$uibModalInstance.closed) {
       if (transition.to().name === $state.current.name) {
         $uibModalInstance.close();
